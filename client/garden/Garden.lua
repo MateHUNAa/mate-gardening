@@ -8,8 +8,6 @@ Garden.__index = Garden
 function Garden:new(center, rows, cols)
      local self = setmetatable({}, Garden)
 
-     Logger:Debug(Config)
-
      local size = Config.Grid.cellSize or 0.8
      self.grid = Grid:new(center, rows or 5, cols or 5, size, size, 0.0)
      self.plants = {}
