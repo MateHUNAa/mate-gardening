@@ -1,6 +1,12 @@
 Plant = {}
 Plant.__index = Plant
 
+--- @class Plant
+--- @field name string
+--- @field growthTime number
+--- @field stages number
+--- @field model string
+--- @field yield number
 
 --- @param seedId string
 ---@param cell Cell
