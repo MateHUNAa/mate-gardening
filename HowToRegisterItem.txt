@@ -1,0 +1,15 @@
+["corn_seed"] = {
+	label = "Corn Seed",
+	weight = 10,
+	stack = true,
+	client = {
+	     mGardening = true,
+		plantData = {
+		     name = "corn",
+			growthTime= 60000,
+			stages = 5,
+			model = "prop_plant_01a",
+			yield = 5
+		}
+	}
+},
