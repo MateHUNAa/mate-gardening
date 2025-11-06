@@ -1,0 +1,1 @@
+--- @alias Cell {row: number, col: number}
