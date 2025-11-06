@@ -33,8 +33,8 @@ function Plant:update()
      local elapsed = GetGameTimer() - self.plantedAt
      local progress = elapsed / self.data.growthTime
 
-     if progress >= (self.state / self.data.stages) then
-          self.state = math.min(self.stage+1, self.data.stages)
+     if progress >= (self.stage / self.data.stages) then
+          self.stage = math.min(self.stage+1, self.data.stages)
      end
 end
 
