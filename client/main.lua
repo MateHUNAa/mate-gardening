@@ -18,6 +18,21 @@ function LoadGardenItems()
                     if plantData and plantData.name then
                          PlantRegistry:Register(plantData.name, plantData)
                          Logger:Info("Registered plant: " .. plantData.name)
+
+                         -- Register seed
+                         local SeedBase = require("client.seeds.SeedBase")
+
+                         if not SeedRegistry:Get(plantData.name) then
+                              local seed = SeedBase:new(plantData.name)
+                              seed.name = plantData.name
+                              seed.model = plantData.model
+                              seed.growthTime = plantData.growthTime
+                              seed.stages = plantData.stages
+                              seed.yield = plantData.yield
+
+                              SeedRegistry:Register(plantData.name, SeedBase)
+                              Logger:Info(("Registered seed: %s"):format(plantData.name))
+                         end
                     end
 
                end
