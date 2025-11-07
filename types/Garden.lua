@@ -1,8 +1,8 @@
 --- @alias Cell {row: number, col: number}
---- @alias Model string|table<number, {model: string, offset: Vector3}>
 --- @alias ToolAction "watering" | "fertilizing" | "pruning" | "harvest"
 
 
+--- @alias Model string|table<number, {model: string, offset: Vector3}>
 --- @class PlantData
 --- @field name string
 --- @field growthTime number

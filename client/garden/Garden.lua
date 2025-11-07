@@ -1,7 +1,6 @@
 Garden = {}
 Garden.__index = Garden
 
-
 --- @param center Vector3
 --- @param rows number
 --- @param cols number
@@ -35,22 +34,31 @@ end
 --- @param cell Cell
 --- @param button number
 function Garden:OnCellClick(cell, button)
-     --- @type Plant
-     local exists = self.plants[("%s_%s"):format(cell.row, cell.col)]
+     local plant = self:GetPlant(cell)
 
-     if not exists then
-          local seed  = GetActiveSeed()
+     if not plant then
+          local seed = GetActiveSeed()
+
           if not seed then
-               Info("Select a seed before planting.")
-               return
+               return Info(lang["info"]["need_seed_for_plant"])
           end
-          self:PlantSeed(seed, cell)
+
+          if not seed.OnPlant then
+               return Logger:Error(("Seed '%s' does not implement OnPlant()"):format(seed.name or "UnknownSeed"))
+          end
+
+          seed:OnPlant(self, cell)
+          return
      end
 
-     local tool = ToolRegistry:Get(ActiveTool or "UnknownTool")
-
-     if tool then
-          tool:OnUse(self, cell)
+     if ActiveTool then
+          if ActiveTool.OnUse then
+               ActiveTool:OnUse(self, cell)
+          else
+               Logger:Warning(("Tool '%s' does not implement OnUse()"):format(ActiveTool.name))
+          end
+     else
+          Info(lang["info"]["no_active_tool"])
      end
 end
 

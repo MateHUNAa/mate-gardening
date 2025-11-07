@@ -24,6 +24,9 @@ client_scripts {
      "client/garden/*.lua",
      "client/tools/ToolHandler.lua",
      "client/tools/ToolRegistry.lua",
+     "client/seeds/SeedHandler.lua",
+     "client/seeds/SeedRegistry.lua",
+
      "client/nui.lua",
      "client/main.lua",
 }
@@ -51,7 +54,8 @@ files {
   "html/assets/*.js",
   "html/assets/*.css",
   "shared/config.lua",
-  "client/tools/*.lua"
+  "client/tools/*.lua",
+  "client/seeds/*.lua"
 }
 
 
