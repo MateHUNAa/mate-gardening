@@ -1,16 +1,6 @@
 Plant = {}
 Plant.__index = Plant
 
----@alias Model string|table<number, {model: string, offset: Vector3}>
-
---- @class PlantData
---- @field name string
---- @field growthTime number
---- @field stages number
---- @field model Model
---- @field modelOffset vector3
---- @field yield number
-
 --- @param seedId string
 --- @param garden Garden
 --- @param cell Cell
@@ -152,10 +142,10 @@ end
 function Plant:DecayWater()
      self.water = math.max(self.water -1, 0)
 
-     Logger:Debug(("Plant %s has decayed water to %d%%"):format(self.data.name, self.water))
+     -- Logger:Debug(("Plant %s has decayed water to %d%%"):format(self.data.name, self.water))
 
      if self.water <= 0 then
-          Logger:Warning(("Plant %s has died due to lack of water on: %s"):format(self.data.name, json.encode(self.cell)))
+          Logger:Warning(("Plant died Action not implemented"))
      end
 end
 

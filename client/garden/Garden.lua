@@ -1,10 +1,3 @@
-
---- @class Garden
---- @field grid Grid|nil
---- @field plants table<string, Plant>
---- @field center Vector3
---- @field rows number
---- @field cols number
 Garden = {}
 Garden.__index = Garden
 

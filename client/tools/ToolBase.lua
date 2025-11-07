@@ -1,7 +1,6 @@
 ToolBase = {}
 ToolBase.__index = ToolBase
 
---- @alias ToolAction "watering" | "fertilizing" | "pruning" | "harvest"
 
 function ToolBase:new(name)
      local self = setmetatable({}, ToolBase)

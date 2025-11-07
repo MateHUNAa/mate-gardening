@@ -1,0 +1,16 @@
+["harvester"] = {
+     label = "Harvester",
+	weight = 200,
+	stack = false,
+	client = {
+          mGardening = true,
+          toolData = {
+               name = "harvester",
+               action = "harvest",
+               actionTime = 1500 -- ms
+          },
+          export = "mate-gardening.handle_tool"
+	}
+},
+
+Valid Actions = "watering" | "fertilizing" | "pruning" | "harvest"
