@@ -26,6 +26,7 @@ end
 
 function SeedBase:Unequip()
     Logger:Warning(("[%s] Unequip() not implemented."):format(self.name or "UnknownSeed"))
+    ActiveSeed = nil
 end
 
 

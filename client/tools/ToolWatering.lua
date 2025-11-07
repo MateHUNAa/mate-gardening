@@ -24,6 +24,7 @@ function ToolWatering:Equip()
 end
 
 function ToolWatering:Unequip()
+     ActiveTool = nil
     if DoesEntityExist(self.prop) then
         Functions.destoryProp(self.prop)
     end
@@ -33,10 +34,10 @@ end
 ---@param garden Garden
 ---@param cell Cell
 ---@param progress number
-function ToolWatering:onHolding(garden, cell, progress)
+function ToolWatering:OnHolding(garden, cell, progress)
      local plant = garden:GetPlant(cell)
 
-     if not plant then return end
+     if not plant then return Logger:Debug("No plant") end
 
      if not self.ptfxLoaded then
           Functions.loadPtfxDict("core")

@@ -63,26 +63,20 @@ function Garden:OnCellClick(cell, button)
 end
 
 function Garden:OnCellHoldComplete(cell)
-     local tool = ToolRegistry:Get(ActiveTool or "UnknownTool")
-
-     if tool then
-          tool:OnHoldComplete(self, cell)
+     if ActiveTool then
+          ActiveTool:OnHoldComplete(self, cell)
      end
 end
 
 function Garden:OnCellHolding(cell, progress)
-     local tool = ToolRegistry:Get(ActiveTool or "UnknownTool")
-
-     if tool then
-          tool:onHolding(self, cell, progress)
+     if ActiveTool then
+          ActiveTool:OnHolding(self, cell, progress)
      end
 end
 
 function Garden:OnCellHoldCancelled(cell)
-     local tool = ToolRegistry:Get(ActiveTool or "UnknownTool")
-
-     if tool then
-          tool:OnHoldCancelled(self, cell)
+     if ActiveTool then
+          ActiveTool:OnHoldCancelled(self, cell)
      end
 end
 

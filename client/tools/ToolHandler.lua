@@ -32,6 +32,10 @@ function OnEquipTool(itemName)
         ActiveTool:Equip()
     end
 
+    if ActiveSeed and ActiveSeed.Unequip then
+         ActiveSeed:Unequip()
+    end
+
     -- Logger:Info(("Equipped tool: %s"):format(itemName))
 end
 

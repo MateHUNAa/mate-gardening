@@ -23,6 +23,7 @@ end
 
 function ToolBase:Unequip()
     Logger:Warning(("[%s] Unequip() not implemented."):format(self.name or "UnknownTool"))
+    ActiveTool = nil
 end
 
 function ToolBase:OnHoldComplete(garden, cell)
@@ -31,6 +32,10 @@ end
 
 function ToolBase:OnHoldCancelled(garden, cell)
     Logger:Warning(("[%s] OnHoldCancelled() not implemented."):format(self.name or "UnknownTool"))
+end
+
+function ToolBase:OnHolding()
+     Logger:Warning(("[%s] OnHolding() not implemented."):format(self.name or "UnknownTool"))
 end
 
 
