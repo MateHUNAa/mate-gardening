@@ -29,7 +29,14 @@ function SetActiveSeed(seedName)
         Info("You put away your seed")
     else
         ActiveSeed = registryName
-        ActiveTool = nil
+
+        if ActiveTool then
+             local tool = ToolRegistry:Get(ActiveTool)
+             if tool then
+                  tool:Unequip()
+             end
+        end
+
         Info(("Equipped: %s"):format(item.label))
     end
 end
