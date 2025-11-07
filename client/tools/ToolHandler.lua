@@ -1,25 +1,44 @@
 ActiveTool = nil
+ActiveToolName = nil
 
+--- Equip or unequip a tool by name.
+---@param itemName string
 function OnEquipTool(itemName)
-     local tool = ToolRegistry:Get(itemName)
+    local tool = ToolRegistry:Get(itemName)
 
-     if tool then
-          if ActiveTool == itemName then
-               ActiveTool = nil
-               Logger:Info("Tool unequipped !")
-               tool:Unequip()
-               return
-          end
+    if not tool then
+        Logger:Warning(("Tool not registered: %s"):format(itemName))
+        return
+    end
 
-          ActiveTool = itemName
-          ActiveSeed = nil
-          Logger:Info("Equipped tool: ", itemName)
-          tool:Equip()
-     else
-          Logger:Warning("Tool not registered:", itemName)
-     end
+    if ActiveToolName == itemName then
+        if ActiveTool and ActiveTool.Unequip then
+            ActiveTool:Unequip()
+        end
+        ActiveTool = nil
+        ActiveToolName = nil
+        -- Logger:Info(("Unequipped tool: %s"):format(itemName))
+        return
+    end
+
+    if ActiveTool and ActiveTool.Unequip then
+        ActiveTool:Unequip()
+    end
+
+    ActiveTool = tool
+    ActiveToolName = itemName
+
+    if ActiveTool.Equip then
+        ActiveTool:Equip()
+    end
+
+    -- Logger:Info(("Equipped tool: %s"):format(itemName))
 end
 
-exports("handle_tool", function (data,slot)
-     OnEquipTool(data.client.toolData.name)
+exports("handle_tool", function(data, slot)
+    if data and data.client and data.client.toolData and data.client.toolData.name then
+        OnEquipTool(data.client.toolData.name)
+    else
+        Logger:Warning("Invalid tool data received")
+    end
 end)
