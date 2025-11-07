@@ -14,7 +14,7 @@ function LoadGardenItems()
 
                if cData.mGardening then
 
-                    --- @type Plant
+                    --- @type PlantData
                     local plantData = cData.plantData
 
                     if plantData and plantData.name then
