@@ -57,6 +57,14 @@
 
 Functions = {}
 
+--- @param model string
+Functions.loadModel = function(model) end
+
+---@param data { prop: string, coords: vector4 }
+---@param freeze boolean
+---@param synced boolean
+Functions.makeProp = function (data, freeze, synced) end
+
 ---@param inputStr string
 ---@return string
 Functions.CapitalizeFirstLetter = function(inputStr) end
