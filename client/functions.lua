@@ -485,15 +485,15 @@ Functions = {
 
 ---@param msg string
 Error = (function(msg)
-     mCore.Notify(lang.Title, msg, "error", 5000)
+     mCore.Notify(lang?.Title or "No Title", msg, "error", 5000)
 end)
 ---@param msg string
 Info = (function(msg)
-     mCore.Notify(lang.Title, msg, "info", 5000)
+     mCore.Notify(lang?.Title or "No Title", msg, "info", 5000)
 end)
 ---@param msg string
 Success = (function(msg)
-     mCore.Notify(lang.Title, msg, "success", 5000)
+     mCore.Notify(lang?.Title or "No Title", msg, "success", 5000)
 end)
 
 
