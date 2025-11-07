@@ -81,3 +81,15 @@ function Garden:GetPlant(cell)
 
      return plant or nil
 end
+
+function Garden:DestroyPlant(cell)
+     local plant = self:GetPlant(cell)
+
+     if not plant then
+          Logger:Error("No plant to Destroy")
+          return
+     end
+
+     plant:Destroy()
+     self.plants[("%s_%s"):format(cell.row, cell.col)] = nil
+end

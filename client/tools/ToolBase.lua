@@ -30,11 +30,27 @@ end
 function ToolBase:OnWater(garden, cell)
      local plant = garden:GetPlant(cell)
 
-     if plant then
-          plant:Water()
+     if not plant then
+          Info("No plant to water")
+          return
      end
+
+     if self.uses <= 0 then
+          Info("Tool is out of uses")
+          return
+     end
+
+     plant:Water()
+     self.uses = math.max(self.uses - 1, 0)
 end
 
 function ToolBase:OnHarvest(garden, cell)
-     Logger:Info(("Harvesting cell: %s"):format(cell.id))
+     local plant = garden:GetPlant(cell)
+
+     if not plant then
+          Info("No plant to harvest")
+          return
+     end
+
+     plant:Harvest()
 end

@@ -155,7 +155,7 @@ function Plant:DecayWater()
      Logger:Debug(("Plant %s has decayed water to %d%%"):format(self.data.name, self.water))
 
      if self.water <= 0 then
-          Logger:Warn(("Plant %s has died due to lack of water on: %s"):format(self.data.name, json.encode(self.cell)))
+          Logger:Warning(("Plant %s has died due to lack of water on: %s"):format(self.data.name, json.encode(self.cell)))
      end
 end
 
@@ -167,4 +167,14 @@ end
 
 function Plant:isFullyGrown()
      return self.stage >= self.data.stages
+end
+
+
+function Plant:Harvest()
+     if not self:isFullyGrown() then
+          Info("Plant is not fully grown")
+          return
+     end
+
+     self.garden:DestroyPlant(self.cell)
 end
