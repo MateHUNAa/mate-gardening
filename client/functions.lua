@@ -1,9 +1,10 @@
 mCore = exports["mCore"]:getSharedObj()
 
-local Peds = {}
+local Peds, Props = {}, {}
 
 local lang = Loc[Config.lan]
 local count = 0
+
 Editable = {}
 Functions = {
      ---@param pos vector3|vector4
@@ -161,6 +162,9 @@ Functions = {
           Functions.loadModel(data.prop)
           local prop = CreateObject(data.prop, data.coords.x, data.coords.y, data.coords.z - 1.03, synced or false, false,
                false)
+
+          Props[#Props + 1] = prop
+
           SetEntityHeading(prop, data.coords.w + 180.0)
           FreezeEntityPosition(prop, freeze or false)
 
@@ -499,6 +503,11 @@ AddEventHandler("onResourceStop", (function(res)
      for i = 1, #Peds do
           if DoesEntityExist(Peds[i]) then
                DeleteEntity(Peds[i])
+          end
+     end
+     for i = 1, #Props do
+          if DoesEntityExist(Props[i]) then
+               DeleteEntity(Props[i])
           end
      end
 end))
