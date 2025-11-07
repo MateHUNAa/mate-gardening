@@ -1,37 +1,49 @@
-ActiveSeed = ""
+ActiveSeed = nil
 
---- @param seedName string
+--- @param seedName string | nil
 function SetActiveSeed(seedName)
-     local item = inv:Items(seedName)
-     local registryName = item.client.plantData.name
+    if not seedName then
+        ActiveSeed = nil
+        Info("You put away your seed")
+        return
+    end
 
-     if not item then
-          Logger:Error(("No seed found with name: %s"):format(seedName))
-          return
-     end
+    local item = inv:Items(seedName)
+    if not item then
+        Logger:Error(("No seed found with name: %s"):format(seedName))
+        ActiveSeed = nil
+        return
+    end
 
+    local plantData = item.client and item.client.plantData
+    local registryName = plantData and plantData.name or nil
 
-     if ActiveSeed and ActiveSeed ~= registryName then
-          Info(("Equipped: %s"):format(item.label))
-     else
-          Info("You put away your seed")
-          ActiveSeed = nil
-          return
-     end
+    if not registryName then
+        Logger:Error(("Seed '%s' has no valid plantData"):format(seedName))
+        ActiveSeed = nil
+        return
+    end
 
-     ActiveSeed = registryName
+    if ActiveSeed == registryName then
+        ActiveSeed = nil
+        Info("You put away your seed")
+    else
+        ActiveSeed = registryName
+        Info(("Equipped: %s"):format(item.label))
+    end
 end
-
 
 function GetActiveSeed()
-	return ActiveSeed
+    return ActiveSeed
 end
 
+exports("handle_seed", function(data, slot, _)
+    local registryName = data.client and data.client.plantData and data.client.plantData.name
+    if not registryName then return end
 
-exports("handle_seed", function (data, slot, _ )
-     if GetActiveSeed() == data.name then
-          SetActiveSeed(nil)
-     else
-          SetActiveSeed(data.name)
-     end
+    if GetActiveSeed() == registryName then
+        SetActiveSeed(nil)
+    else
+        SetActiveSeed(data.name)
+    end
 end)
