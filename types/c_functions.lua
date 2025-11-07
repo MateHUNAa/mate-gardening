@@ -1,7 +1,7 @@
 -- DOC GENERATED WITH ChatGPT <3
 
 ---@meta
--- c_functions.lua — Type definitions for Functions table
+-- c_functions.lua — Type definitions and implementations for Functions table
 
 -------------------------------------------------
 -- Utility Types
@@ -23,48 +23,100 @@
 ---@field scenario string
 ---@field anim table
 
--------------------------------------------------
--- Main Functions Table
--------------------------------------------------
-
----@class Functions
----@field TeleportPlayer fun(pos: vector3|vector4, handleCam?: boolean)
----@field FindPlayerPointInRadius fun(r: number, centerCoord: vector3): vector3
----@field FindPointInRadius fun(r: number, centerCoord: vector3): vector3
----@field loadModel fun(model: string)
----@field unloadModel fun(model: string)
----@field loadAnimDict fun(dict: string)
----@field unloadAnimDict fun(dict: string)
----@field loadPtfxDict fun(dict: string)
----@field unloadPtfxDict fun(dict: string)
----@field makeProp fun(data: { prop: string, coords: vector4 }, freeze: boolean, synced: boolean): number
----@field makeBlip fun(data: { coords: vector3, name: string, sprite: number, col: number, scale?: number, disp?: number, category?: number }): number
----@field makePed fun(model: string, data: makePedData, options?: table)
----@field destoryProp fun(entity: number)
----@field loadDrillSound fun()
----@field unloadDrillSound fun()
----@field lookAtMe fun(entity: number)
----@field lookEnt fun(entity: number|vector3)
----@field lockInv fun(toggle: boolean)
----@field progressBar fun(data: { time: number, label: string, dead?: boolean, cancel?: boolean, dict?: string, anim?: string, flag?: number, task?: string }): boolean
----@field toggleItem fun(give: number|boolean, item: string, amount: number)
----@field HasItem fun(items: string, amount: number): boolean
----@field pairsByKeys fun(t: table): fun(): string, any
----@field CapitalizeFirstLetter fun(word: string): string
----@field MoveTo fun(destination: vector3|number): boolean
----@field RotToDir fun(rotation: vector3): vector3
----@field GetVehicleProps fun(model: string): table
-
 Functions = {}
 
---- @param model string
-Functions.loadModel = function(model) end
+---@param pos vector3|vector4
+---@param handleCam? boolean
+function Functions.TeleportPlayer(pos, handleCam) end
+
+---@param r number
+---@param centerCoord vector3
+---@return vector3
+function Functions.FindPlayerPointInRadius(r, centerCoord) end
+
+---@param r number
+---@param centerCoord vector3
+---@return vector3
+function Functions.FindPointInRadius(r, centerCoord) end
+
+---@param model string
+function Functions.loadModel(model) end
+
+---@param model string
+function Functions.unloadModel(model) end
+
+---@param dict string
+function Functions.loadAnimDict(dict) end
+
+---@param dict string
+function Functions.unloadAnimDict(dict) end
+
+---@param dict string
+function Functions.loadPtfxDict(dict) end
+
+---@param dict string
+function Functions.unloadPtfxDict(dict) end
 
 ---@param data { prop: string, coords: vector4 }
 ---@param freeze boolean
 ---@param synced boolean
-Functions.makeProp = function (data, freeze, synced) end
+---@return number
+function Functions.makeProp(data, freeze, synced) end
 
----@param inputStr string
+---@param data { coords: vector3, name: string, sprite: number, col: number, scale?: number, disp?: number, category?: number }
+---@return number
+function Functions.makeBlip(data) end
+
+---@param model string
+---@param data makePedData
+---@param options? table
+function Functions.makePed(model, data, options) end
+
+---@param entity number
+function Functions.destoryProp(entity) end
+
+function Functions.loadDrillSound() end
+function Functions.unloadDrillSound() end
+
+---@param entity number
+function Functions.lookAtMe(entity) end
+
+---@param entity number|vector3
+function Functions.lookEnt(entity) end
+
+---@param toggle boolean
+function Functions.lockInv(toggle) end
+
+---@param data { time: number, label: string, dead?: boolean, cancel?: boolean, dict?: string, anim?: string, flag?: number, task?: string }
+---@return boolean
+function Functions.progressBar(data) end
+
+---@param give number|boolean
+---@param item string
+---@param amount number
+function Functions.toggleItem(give, item, amount) end
+
+---@param items string
+---@param amount number
+---@return boolean
+function Functions.HasItem(items, amount) end
+
+---@param t table
+---@return fun(): string, any
+function Functions.pairsByKeys(t) end
+
+---@param word string
 ---@return string
-Functions.CapitalizeFirstLetter = function(inputStr) end
+function Functions.CapitalizeFirstLetter(word) end
+
+---@param destination vector3|number
+---@return boolean
+function Functions.MoveTo(destination) end
+
+---@param rotation vector3
+---@return vector3
+function Functions.RotToDir(rotation) end
+
+---@param model string
+---@return table
+function Functions.GetVehicleProps(model) end
