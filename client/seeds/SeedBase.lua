@@ -16,6 +16,8 @@ end
 
 function SeedBase:OnPlant(garden, cell)
     Logger:Warning(("[%s] OnPlant() not implemented."):format(self.name or "UnknownSeed"))
+
+    garden:PlantSeed(self.name, cell)
 end
 
 function SeedBase:Equip()
