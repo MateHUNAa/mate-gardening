@@ -1,3 +1,10 @@
+
+--- @class Garden
+--- @field grid Grid|nil
+--- @field plants table<string, Plant>
+--- @field center Vector3
+--- @field rows number
+--- @field cols number
 Garden = {}
 Garden.__index = Garden
 
@@ -24,18 +31,19 @@ end
 --- @param cell Cell
 --- @param button number
 function Garden:OnCellClick(cell, button)
+     --- @type Plant
      local exists = self.plants[("%s_%s"):format(cell.row, cell.col)]
 
      if not exists then
           self:PlantSeed("tomato", cell)
      else
-          Logger:Info("Plant already here: ", exists.id, "Stage: ", exists.stage)
+          Logger:Info("Plant already here: ", "Stage: ", exists.stage)
      end
 end
 
 
 function Garden:PlantSeed(seedId, cell)
-     local plant = Plant:new(seedId, cell)
+     local plant = Plant:new(seedId, self, cell)
      if not plant then
           Logger:Error("[PlantSeed]: Failed to create plant")
           return false
