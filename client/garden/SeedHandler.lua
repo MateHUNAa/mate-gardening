@@ -30,11 +30,8 @@ function SetActiveSeed(seedName)
     else
         ActiveSeed = registryName
 
-        if ActiveTool then
-             local tool = ToolRegistry:Get(ActiveTool)
-             if tool then
-                  tool:Unequip()
-             end
+        if ActiveTool and ActiveTool.Unequip then
+             ActiveTool:Unequip()
         end
 
         Info(("Equipped: %s"):format(item.label))

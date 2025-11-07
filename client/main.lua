@@ -1,5 +1,3 @@
-
-
 local pos = vec4(53.0448, -1894.7394, 21.6000-0.9, 52.7274)
 
 function LoadGardenItems()
@@ -34,15 +32,17 @@ function LoadGardenTools()
 
                if cData.mGardening and cData.toolData then
                     local toolData = cData.toolData
+                    local action = toolData.action or "none"
 
-                    local tool = ToolBase:new(toolData.name)
+                    local toolClass = ToolRegistry:GetClass(action) or ToolBase
+                    local tool = toolClass:new(toolData.name)
+
                     tool.action = toolData.action
-                    tool.range = toolData.range
-                    tool.actionTime = toolData.actionTime
-                    tool.uses = toolData.uses
+                    tool.actionTime = toolData.actionTime or 1500
+                    tool.uses = toolData.uses or 10
 
                     ToolRegistry:Register(tool.name, tool)
-                    Logger:Info("Registered tool: " .. tool.name, tool)
+                    Logger:Info(("Registered tool: %s (action=%s)"):format(tool.name, tool.action))
                end
           end
      end
