@@ -33,6 +33,11 @@ function Plant:new(seedId, garden, cell)
      self.plantedAt = GetGameTimer()
      self.obj = nil
 
+     self.isAlive = true
+
+     self.water = 50
+     self.lastDecay = GetGameTimer()
+
      self:SpawnModel()
 
      return self
@@ -122,6 +127,8 @@ function Plant:GetProgress()
 end
 
 function Plant:update()
+     if not self.isAlive then return end -- TODO: Do smthing when the plant is dead
+
      local progress = self:GetProgress()
      local stage = math.floor(progress * self.data.stages) + 1
 
@@ -133,8 +140,30 @@ function Plant:update()
           self.stage = stage
           self:RefreshModel()
      end
+
+     -- Watering
+     local now = GetGameTimer()
+     if now - self.lastDecay >= Config.WaterDecay then
+          self:DecayWater()
+          self.lastDecay = now
+     end
 end
 
+function Plant:DecayWater()
+     self.water = math.max(self.water -1, 0)
+
+     Logger:Debug(("Plant %s has decayed water to %d%%"):format(self.data.name, self.water))
+
+     if self.water <= 0 then
+          Logger:Warn(("Plant %s has died due to lack of water on: %s"):format(self.data.name, json.encode(self.cell)))
+     end
+end
+
+function Plant:Water(amount)
+     amount = amount or 20
+     self.water = math.min(self.water + amount, 100)
+     Logger:Info(("Watered %s (now at %d%%)"):format(self.data.name, self.water))
+end
 
 function Plant:isFullyGrown()
      return self.stage >= self.data.stages

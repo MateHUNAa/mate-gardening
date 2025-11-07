@@ -22,6 +22,7 @@ client_scripts {
      "client/init.lua",
      "client/functions.lua",
      "client/garden/*.lua",
+     "client/tools/*.lua",
      "client/nui.lua",
      "client/main.lua",
 }

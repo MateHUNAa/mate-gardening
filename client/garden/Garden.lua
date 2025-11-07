@@ -41,8 +41,12 @@ function Garden:OnCellClick(cell, button)
                return
           end
           self:PlantSeed(seed, cell)
-     else
-          Logger:Info("Plant already here: ", "Stage: ", exists.stage)
+     end
+
+     local tool = ToolRegistry:Get(ActiveTool or "UnknownTool")
+
+     if tool then
+          tool:OnUse(self, cell)
      end
 end
 
@@ -69,4 +73,11 @@ function Garden:update()
                plant:update()
           end
      end
+end
+
+--- @param cell Cell
+function Garden:GetPlant(cell)
+     local plant = self.plants[("%s_%s"):format(cell.row, cell.col)]
+
+     return plant or nil
 end

@@ -19,11 +19,30 @@ function LoadGardenItems()
 
                     if plantData and plantData.name then
                          PlantRegistry:Register(plantData.name, plantData)
-                         Logger:Info("Registered plant: " .. plantData.name, plantData)
-                    else
-                         Logger:Error(("Skipped ^s (missing planyData or name)"):format(item))
+                         Logger:Info("Registered plant: " .. plantData.name)
                     end
 
+               end
+          end
+     end
+end
+
+function LoadGardenTools()
+     for item,data in pairs(inv:Items()) do
+          if data and data.client then
+               local cData = data.client
+
+               if cData.mGardening and cData.toolData then
+                    local toolData = cData.toolData
+
+                    local tool = ToolBase:new(toolData.name)
+                    tool.action = toolData.action
+                    tool.range = toolData.range
+                    tool.actionTime = toolData.actionTime
+                    tool.uses = toolData.uses
+
+                    ToolRegistry:Register(tool.name, tool)
+                    Logger:Info("Registered tool: " .. tool.name, tool)
                end
           end
      end
@@ -33,7 +52,9 @@ Citizen.CreateThread(function (threadId)
      while not ESX.IsPlayerLoaded() do
           Wait(250)
      end
+
      LoadGardenItems()
+     LoadGardenTools()
 
 	local garden = Garden:new(pos.xyz, 5,5)
 

@@ -20,5 +20,6 @@ Config.Grid = {
      cellSize = 0.8
 }
 
+Config.WaterDecay = 2000 -- In every 2 secounds
 
 Loc = {}
