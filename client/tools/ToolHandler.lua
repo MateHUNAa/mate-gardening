@@ -7,12 +7,14 @@ function OnEquipTool(itemName)
           if ActiveTool == itemName then
                ActiveTool = nil
                Logger:Info("Tool unequipped !")
+               tool:Unequip()
                return
           end
 
           ActiveTool = itemName
           ActiveSeed = nil
           Logger:Info("Equipped tool: ", itemName)
+          tool:Equip()
      else
           Logger:Warning("Tool not registered:", itemName)
      end

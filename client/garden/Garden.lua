@@ -12,10 +12,21 @@ function Garden:new(center, rows, cols)
      self.grid = Grid:new(center, rows or 5, cols or 5, size, size, 0.0)
      self.plants = {}
 
-
      self.grid.onClick = (function (cell, button)
           self:OnCellClick(cell, button)
      end)
+
+     self.grid.onHolding = function (cell, progress)
+          self:OnCellHolding(cell, progress)
+     end
+
+     self.grid.onHoldComplete = function (cell)
+          self:OnCellHoldComplete(cell)
+     end
+
+     self.grid.onHoldCancelled = function (cell)
+          self:OnCellHoldCancelled(cell)
+     end
 
      return self
 end
@@ -40,6 +51,30 @@ function Garden:OnCellClick(cell, button)
 
      if tool then
           tool:OnUse(self, cell)
+     end
+end
+
+function Garden:OnCellHoldComplete(cell)
+     local tool = ToolRegistry:Get(ActiveTool or "UnknownTool")
+
+     if tool then
+          tool:OnHoldComplete(self, cell)
+     end
+end
+
+function Garden:OnCellHolding(cell, progress)
+     local tool = ToolRegistry:Get(ActiveTool or "UnknownTool")
+
+     if tool then
+          tool:onHolding(self, cell, progress)
+     end
+end
+
+function Garden:OnCellHoldCancelled(cell)
+     local tool = ToolRegistry:Get(ActiveTool or "UnknownTool")
+
+     if tool then
+          tool:OnHoldCancelled(self, cell)
      end
 end
 
