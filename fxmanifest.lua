@@ -8,17 +8,17 @@ description 'Template used mCore'
 version '1.0.0'
 
 
-shared_scripts {
-    "shared/**.*"
-}
+
 
 server_scripts {
+     "shared/**.*",
     "server/functions.lua",
     "server/main.lua",
 }
 
 client_scripts {
      '@mate-grid/init.lua',
+     "shared/**.*",
      "client/init.lua",
      "client/functions.lua",
      "client/garden/*.lua",
