@@ -1,20 +1,14 @@
---- @class Plant
---- @field data PlantData|boolean
---- @field garden Garden
---- @field cell Cell
---- @field plantedAt number
---- @field obj any
---- @field update fun(self: Plant)
---- @field stage number
---- @return Plant|boolean
 Plant = {}
 Plant.__index = Plant
+
+---@alias Model string|table<number, {model: string, offset: Vector3}>
 
 --- @class PlantData
 --- @field name string
 --- @field growthTime number
 --- @field stages number
---- @field model string
+--- @field model Model
+--- @field modelOffset vector3
 --- @field yield number
 
 --- @param seedId string
@@ -27,7 +21,7 @@ function Plant:new(seedId, garden, cell)
 
      if not plantData then
           Logger:Error("[Plant:new]: No plant found with seedId: ", seedId)
-          return false
+          return
      end
 
      local self = setmetatable({}, Plant)
@@ -60,21 +54,43 @@ function Plant:GetWorldPosition()
 
      local pos = grid:GetCellWorldPos(cell.row, cell.col)
 
+     if not self.data then
+          return pos
+     end
+
+     --- @type PlantData
+     local data = self.data
+
+     if type(data.model) == "string" then
+          pos += data.modelOffset
+          return pos
+     end
+
+     if type(data.model) == "table" then
+          local stageData = data.model[math.min(self.stage, #data.model)]
+
+          if stageData and stageData.offset then
+               pos+= stageData.offset
+               return pos
+          end
+     end
+
      return pos
 end
 
 function Plant:SpawnModel()
-     local model = self.model
+     local model = self.data.model
      if type(model) == "table" then
-          model = model[self.stage] or model[1]
+          local idx = math.min(self.stage, #model)
+          Logger:Debug(("Plant stage: %d, model index: %d"):format(self.stage, idx))
+          model = model[idx].model or model[1].model
      end
 
      local pos = self:GetWorldPosition()
 
-
      self.obj = Functions.makeProp({
           prop = model,
-          coords = vector4(pos.x, pos.y, pos.z, 0.0)
+          coords = vector4(pos.x, pos.y, pos.z, math.random(0, 360))
      }, true, false)
 end
 
@@ -101,7 +117,7 @@ end
 
 --- Calculates current growth progress (0.0 - 1.0)
 function Plant:GetProgress()
-    local elapsed = GetGameTimer() - self.startTime
+    local elapsed = GetGameTimer() - self.plantedAt
     return math.min(elapsed / self.data.growthTime, 1.0)
 end
 
