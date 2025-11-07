@@ -35,7 +35,12 @@ function Garden:OnCellClick(cell, button)
      local exists = self.plants[("%s_%s"):format(cell.row, cell.col)]
 
      if not exists then
-          self:PlantSeed("tomato", cell)
+          local seed  = GetActiveSeed()
+          if not seed then
+               Info("Select a seed before planting.")
+               return
+          end
+          self:PlantSeed(seed, cell)
      else
           Logger:Info("Plant already here: ", "Stage: ", exists.stage)
      end
