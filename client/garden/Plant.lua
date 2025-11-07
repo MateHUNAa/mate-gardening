@@ -1,3 +1,4 @@
+--- @class Plant
 Plant = {}
 Plant.__index = Plant
 
