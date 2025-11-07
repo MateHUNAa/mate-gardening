@@ -11,6 +11,7 @@ function OnEquipTool(itemName)
           end
 
           ActiveTool = itemName
+          ActiveSeed = nil
           Logger:Info("Equipped tool: ", itemName)
      else
           Logger:Warning("Tool not registered:", itemName)

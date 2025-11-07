@@ -29,6 +29,7 @@ function SetActiveSeed(seedName)
         Info("You put away your seed")
     else
         ActiveSeed = registryName
+        ActiveTool = nil
         Info(("Equipped: %s"):format(item.label))
     end
 end
