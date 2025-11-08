@@ -22,6 +22,10 @@ Config.Grid = {
 
 Config.WaterDecay = 2000 -- In every 2 secounds
 
+Config.Timeings = {
+     ["plant"] = 10000,
+}
+
 Config.Props = {
      WateringCan = {
           model = "prop_wateringcan",
@@ -32,7 +36,7 @@ Config.Animations = {
      Watering = {
            dict = "amb@world_human_gardener_leaf_blower@base",
            anim = "base"
-     }
+     },
 }
 
 Loc = {}

@@ -21,25 +21,56 @@ function Plant:new(seedId, garden, cell)
      self.garden = garden
      self.cell = cell
      self.stage = 1
-     self.plantedAt = GetGameTimer()
+     self.plantedAt = nil
      self.obj = nil
 
-     self.isAlive = true
-
+     self.isAlive = false
      self.water = 50
      self.lastDecay = GetGameTimer()
+     self.planting = false
 
-     self:SpawnModel()
+     self:StartPlant(self.garden)
 
      return self
+end
+
+--- @param garden Garden
+function Plant:StartPlant(garden)
+     if garden and garden.planting then
+          Error(lang["error"]["already_planting"])
+          return
+     end
+     garden.planting = true
+
+     Functions.MoveTo(self:GetWorldPosition(false))
+     if Functions.progressBar({
+          label = lang["info"]["planting"] or "planting",
+          time = Config.Timeings["plant"],
+          task = "WORLD_HUMAN_GARDENER_PLANT"
+     }) then
+          ClearPedTasks(cache.ped)
+          self:SpawnModel()
+
+          Wait(2000)
+          self.plantedAt = GetGameTimer()
+          self.lastDecay = GetGameTimer()
+          self.isAlive = true
+          garden.planting = false
+     end
+
 end
 
 --
 -- Model Creation
 --
 
+
+--- @param withOffset boolean
 --- @return Vector3
-function Plant:GetWorldPosition()
+function Plant:GetWorldPosition(withOffset)
+     if type(withOffset) == "nil" then
+          withOffset = true
+     end
      if not self.garden or not self.garden.grid then
           Logger:Error("[Plant:GetWorldPosition] Garden or grid not found")
           return vec3(0,0,0)
@@ -49,6 +80,10 @@ function Plant:GetWorldPosition()
      local cell = self.cell
 
      local pos = grid:GetCellWorldPos(cell.row, cell.col)
+
+     if not withOffset then
+          return pos
+     end
 
      if not self.data then
           return pos
@@ -161,11 +196,14 @@ function Plant:isFullyGrown()
 end
 
 
+
 function Plant:Harvest()
      if not self:isFullyGrown() then
           Info("Plant is not fully grown")
           return
      end
+
+     Functions.toggleItem(true, self.data.name, self.data.yield)
 
      self.garden:DestroyPlant(self.cell)
 end
