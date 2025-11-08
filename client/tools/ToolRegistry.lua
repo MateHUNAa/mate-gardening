@@ -25,7 +25,9 @@ end
 local ToolBase = require("client.tools.ToolBase")
 local ToolWatering = require("client.tools.ToolWatering")
 local ToolHarvest = require("client.tools.ToolHarvest")
+local ToolShovel = require("client.tools.ToolShovel")
 
 ToolRegistry:RegisterClass("none", ToolBase)
 ToolRegistry:RegisterClass("watering", ToolWatering)
 ToolRegistry:RegisterClass("harvest", ToolHarvest)
+ToolRegistry:RegisterClass("shovel", ToolShovel)
