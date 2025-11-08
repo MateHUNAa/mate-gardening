@@ -82,6 +82,13 @@ end
 
 
 function Garden:PlantSeed(seedId, cell)
+     local exists = self:GetPlant(cell)
+     if exists then
+          Logger:Debug(("Seed already planted at %s"):format(json.encode(cell)))
+          Error(lang["error"]["seed_already_planted"])
+          return false
+     end
+
      local plant = Plant:new(seedId, self, cell)
      if not plant then
           Logger:Error("[PlantSeed]: Failed to create plant")
@@ -109,7 +116,7 @@ end
 function Garden:GetPlant(cell)
      local plant = self.plants[("%s_%s"):format(cell.row, cell.col)]
 
-     return plant or nil
+     return plant or false
 end
 
 function Garden:DestroyPlant(cell)
