@@ -1,5 +1,5 @@
 --- @alias Cell {row: number, col: number}
---- @alias ToolAction "watering" | "fertilizing" | "pruning" | "harvest"
+--- @alias ToolAction "watering" | "fertilizing" | "pruning" | "harvest" | "dig"
 
 
 --- @alias Model string|table<number, {model: string, offset: Vector3}>
