@@ -29,7 +29,10 @@ Config.Timeings = {
 Config.Props = {
      WateringCan = {
           model = "prop_wateringcan",
-     }
+     },
+     Shovel = {
+          model = "prop_tool_shovel",
+     },
 }
 
 Config.Animations = {
@@ -37,6 +40,10 @@ Config.Animations = {
            dict = "amb@world_human_gardener_leaf_blower@base",
            anim = "base"
      },
+     Dig = {
+           dict = "random@burial",
+           anim = "a_burial"
+     }
 }
 
 Loc = {}
