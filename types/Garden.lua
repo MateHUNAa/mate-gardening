@@ -3,6 +3,7 @@
 
 
 --- @alias Model string|table<number, {model: string, offset: Vector3}>
+
 --- @class PlantData
 --- @field name string
 --- @field growthTime number
