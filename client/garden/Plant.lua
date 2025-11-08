@@ -36,6 +36,15 @@ end
 
 --- @param garden Garden
 function Plant:StartPlant(garden)
+     if mCore.isDebug() then
+          self:SpawnModel()
+
+          self.plantedAt = GetGameTimer()
+          self.lastDecay = GetGameTimer()
+          self.isAlive = true
+          return
+     end
+
      if garden and garden.planting then
           Error(lang["error"]["already_planting"])
           return
@@ -43,9 +52,11 @@ function Plant:StartPlant(garden)
      garden.planting = true
 
      Functions.MoveTo(self:GetWorldPosition(false))
+
+
      if Functions.progressBar({
           label = lang["info"]["planting"] or "planting",
-          time = Config.Timeings["plant"],
+          time = mCore.isDebug() and 1000 or Config.Timeings["plant"],
           task = "WORLD_HUMAN_GARDENER_PLANT"
      }) then
           ClearPedTasks(cache.ped)
