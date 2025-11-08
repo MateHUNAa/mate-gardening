@@ -375,7 +375,7 @@ Functions = {
      ---@param item string
      ---@param amount number
      toggleItem = (function(give, item, amount)
-          TriggerServerEvent("mCore:server:toggleItem", give, item, amount)
+          lib.callback.await("mCore:toggleItem", false, give,item,amount)
      end),
      ---@param items string
      ---@param amount number
