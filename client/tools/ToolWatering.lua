@@ -35,6 +35,8 @@ end
 ---@param cell Cell
 ---@param progress number
 function ToolWatering:OnHolding(garden, cell, progress)
+     garden.grid.holdDuration = self.actionTime
+
      local plant = garden:GetPlant(cell)
 
      if not plant then return Logger:Debug("No plant") end
