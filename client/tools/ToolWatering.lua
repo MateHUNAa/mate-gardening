@@ -41,6 +41,10 @@ function ToolWatering:OnHolding(garden, cell, progress)
 
      if not plant then return Logger:Debug("No plant") end
 
+     Citizen.CreateThread((function ()
+          Functions.lookEnt(plant.obj)
+     end))
+
      if not self.ptfxLoaded then
           Functions.loadPtfxDict("core")
           self.ptfxLoaded = true
