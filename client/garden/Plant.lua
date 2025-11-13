@@ -29,6 +29,9 @@ function Plant:new(seedId, garden, cell)
      self.lastDecay = GetGameTimer()
      self.planting = false
 
+     self.isStatusShown = false
+     self.dui = nil
+
      self:StartPlant(self.garden)
 
      return self
@@ -38,6 +41,11 @@ end
 function Plant:StartPlant(garden)
      if mCore.isDebug() then
           self:SpawnModel()
+
+          self.dui = lib.dui:new({
+               url = ("nui://%s/html/index.html"):format(cache.resource),
+               debug=true
+          })
 
           self.plantedAt = GetGameTimer()
           self.lastDecay = GetGameTimer()
@@ -61,6 +69,14 @@ function Plant:StartPlant(garden)
      }) then
           ClearPedTasks(cache.ped)
           self:SpawnModel()
+
+          -- FIXME: Cauze crash !
+          self.dui = lib.dui:new({
+               url = ("nui://%s/html/index.html"):format(cache.resource),
+               debug=true,
+               width = 100,
+               height = 100
+          })
 
           Wait(2000)
           self.plantedAt = GetGameTimer()
@@ -184,6 +200,19 @@ function Plant:update()
           self:DecayWater()
           self.lastDecay = now
      end
+
+     if self.isStatusShown and next(self.dui) ~= nil then
+          Logger:Debug("Plant status updated", self.isStatusShown, self.dui)
+          if not self.dui.dictName or not self.dui.txtName then
+               return Logger:Error("Missing UI elements for plant status")
+          end
+
+          Logger:Debug():Info("Calling mCore.DrawCustomIcon")
+          mCore.DrawCustomIcon(vec3(), 10, 9.8, {
+               dict = self.dui.dictName,
+               name = self.dui.txtName
+          }, nil, vec3(1,1,0), nil, true)
+     end
 end
 
 function Plant:DecayWater()
@@ -217,4 +246,21 @@ function Plant:Harvest()
      Functions.toggleItem(true, self.data.name, self.data.yield)
 
      self.garden:DestroyPlant(self.cell)
+end
+
+
+function Plant:ToggleStatus()
+     self.isStatusShown = not self.isStatusShown
+     if self.isStatusShown then
+          sendNUI("sendPlantData", {
+               water = self.water,
+               health = self.health,
+               stage = self.stage,
+               maxstage= self.data.stages,
+               name = self.data.name
+          })
+     else
+          sendNUI("sendPlantData",nil)
+     end
+     return self.isStatusShown
 end
