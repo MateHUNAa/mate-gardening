@@ -9,14 +9,15 @@ version '1.0.0'
 
 
 
-
 server_scripts {
-     "shared/**.*",
+    "shared/**.*",
+    "@mate-logger/init.lua",
     "server/functions.lua",
     "server/main.lua",
 }
 
 client_scripts {
+     "@mate-logger/init.lua",
      '@mate-grid/init.lua',
      "shared/**.*",
      "client/init.lua",
@@ -39,7 +40,8 @@ dependency {
     'mCore',
     'oxmysql',
     'ox_lib',
-    "mate-grid"
+    "mate-grid",
+    "mate-logger"
 }
 
 
