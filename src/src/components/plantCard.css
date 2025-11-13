@@ -1,0 +1,87 @@
+:root{
+    --backColor: rgba(217, 222, 224, 0.449);
+    --primaryColor: rgb(18, 230, 148);
+    --specialColor: rgb(18, 205, 230);
+}
+
+
+.main{
+    background-color: var(--backColor);
+    width: 200px;
+    height: 270px;
+    color: white;
+    border-radius: 10px;
+    padding: 10px;
+    filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.249));
+    border: 2px solid rgba(255, 255, 255, 0.416);
+
+}
+
+.proggresBarOut{
+    width: 100%;
+    background-color: rgba(246, 246, 246, 0.337);
+    height: 15px;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 5px;
+    filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.381));
+}
+.proggresBarText{
+
+    margin-right: 2px;
+    font-size: 12px;
+    text-shadow: 0px 0px 3px rgb(0, 0, 0);
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+}
+.szazalek{
+    font-size: 10px;
+    text-shadow: 0px 0px 5px rgb(0, 0, 0);
+}
+.proggresBar{
+    background-color: var(--primaryColor);
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+
+.specialColor{
+    background-color: var(--specialColor);
+    
+}
+.image{
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.tilte{
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: bold;
+    margin: 0px;
+    margin-bottom: 5px;
+    text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.722);
+}
+
+.pFix{
+    padding-bottom: 3px;
+    
+}
+
+p{
+    padding-left: 3px;
+    padding-bottom: 1px;
+    font-size: 14px;
+    text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.89);
+}
+
