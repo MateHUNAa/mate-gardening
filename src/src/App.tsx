@@ -3,42 +3,30 @@ import { useNuiEvent } from "@/hooks/useNuiEvent";
 import { debugData } from "@/utils/debugData";
 import type { Plant } from "@/types/plant";
 import PlantCard from "@/components/plantCard";
-
+import { isEnvBrowser } from "./utils/misc";
 
 function App() {
-  const [visible, setVisibility] = useState<boolean>(true); // fejlesztéshez maradhat true
-  const [plant, setPlant] = useState<Plant | null>(null);
+  const [visible, setVisibility] = useState<boolean>(
+    isEnvBrowser() ? true : false,
+  );
 
   useNuiEvent("open", () => setVisibility(true));
   useNuiEvent("close", () => setVisibility(false));
 
-
-  useNuiEvent<Plant>("sendPlantData", (data) => {
-    setPlant(data);
-  });
-
-  useEffect(() => {
-    debugData<Plant>([
-      {
-        action: "sendPlantData",
-        data: { name: "Aloe", water: 50, health: 88, stage: 3, maxstage: 5},
-      },
-    ]);
-  }, []);
-
   return (
     <div className="App">
-      {visible && (
-        <div>
-          {plant ? (
-              <PlantCard plant={plant} />
-            ) : (
-              <p className="text-center text-gray-400">Várakozás debug adatra…</p>
-            )}
-        </div>
-      )}
+      {visible && <div></div>}
+
+      <PlantCard />
     </div>
   );
 }
+
+debugData<Plant>([
+  {
+    action: "sendPlantData",
+    data: { name: "Aloe", water: 50, health: 88, stage: 3, maxstage: 5 },
+  },
+]);
 
 export default App;
