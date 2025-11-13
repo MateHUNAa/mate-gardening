@@ -28,14 +28,20 @@ end
 
 function ToolBase:OnHoldComplete(garden, cell)
     Logger:Warning(("[%s] OnHoldComplete() not implemented."):format(self.name or "UnknownTool"))
+    return
+
 end
 
 function ToolBase:OnHoldCancelled(garden, cell)
     Logger:Warning(("[%s] OnHoldCancelled() not implemented."):format(self.name or "UnknownTool"))
+    return
+
 end
 
-function ToolBase:OnHolding()
+function ToolBase:OnHolding(garden)
      Logger:Warning(("[%s] OnHolding() not implemented."):format(self.name or "UnknownTool"))
+     garden.grid:resetHold()
+     return
 end
 
 
