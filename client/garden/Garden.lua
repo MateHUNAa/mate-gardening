@@ -1,5 +1,6 @@
 Garden = {}
 Garden.__index = Garden
+Garden.activeGarden = nil
 
 --- @param center Vector3
 --- @param rows number
@@ -10,6 +11,8 @@ function Garden:new(center, rows, cols)
      local size = Config.Grid.cellSize or 0.8
      self.grid = Grid:new(center, rows or 5, cols or 5, size, size, 0.0)
      self.plants = {}
+
+     self.lastHoveredCell = nil
 
      self.grid.onClick = (function (cell, button)
           self:OnCellClick(cell, button)
@@ -27,9 +30,58 @@ function Garden:new(center, rows, cols)
           self:OnCellHoldCancelled(cell)
      end
 
+     self.hoverThread = false
+     self.grid.onHover = (function(cell)
+          if not cell or type(cell) ~= "table" then return end
+          if self.hoverThread then return end
+
+          self.hoverThread = true
+          Citizen.CreateThread(function()
+               self:OnHover(cell)
+               Wait(150)
+               self.hoverThread = false
+          end)
+     end)
+
      return self
 end
 
+
+--- TODO: Removed this in the future, wrong implementation not handeling multiple Grids.
+--- Returns the active garden instance.
+--- @return Garden
+function Garden:GetActiveGarden()
+     return Garden.activeGarden
+end
+
+function Garden:OnHover(cell)
+     if ActiveTool?.action ~= "inspect" or false then
+          return
+     end
+
+     local function toggleOldStatus()
+          if self.lastHoveredCell then
+               local oldPlant = self:GetPlant(self.lastHoveredCell)
+               if oldPlant then
+                    oldPlant:ToggleStatus()
+                    self.lastHoveredCell = nil
+               end
+          end
+     end
+
+     if self.lastHoveredCell ~= cell then
+          local plant = self:GetPlant(cell)
+          if plant then
+               plant:ToggleStatus()
+
+               toggleOldStatus()
+
+               self.lastHoveredCell = cell
+          else
+               toggleOldStatus()
+          end
+     end
+end
 
 --- @param cell Cell
 --- @param button number
@@ -114,6 +166,10 @@ end
 
 --- @param cell Cell
 function Garden:GetPlant(cell)
+     if not cell then
+         return false
+     end
+
      local plant = self.plants[("%s_%s"):format(cell.row, cell.col)]
 
      return plant or false
