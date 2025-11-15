@@ -141,7 +141,7 @@ function Plant:SpawnModel()
      local model = self.data.model
      if type(model) == "table" then
           local idx = math.min(self.stage, #model)
-          Logger:Debug(("Plant stage: %d, model index: %d"):format(self.stage, idx))
+          Logger:Debug(("Plant stage: %d, model index: %d"):format(self.stage, idx), {lSettings = {id = "Plant:SpawnModel"}})
           model = model[idx].model or model[1].model
      end
 
@@ -205,7 +205,7 @@ function Plant:update()
      if self.isStatusShown and next(self.dui) ~= nil then
          self:PlantStatusUpdate()
          if not self.dui.dictName or not self.dui.txtName then
-             return Logger:Error("Missing UI elements for plant status")
+             return Logger:Error("Missing UI elements for plant status", {lSettings = {id = "dui-missing-elements", prefixes = {"DUI"}}})
          end
 
          local w, h = 2.5, 2.5
