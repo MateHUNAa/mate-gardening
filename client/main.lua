@@ -2,6 +2,7 @@ local pos = vec4(53.0448, -1894.7394, 21.6000-0.9, 52.7274)
 
 Logger:SuppressLog("plantStatus") -- PlantStatus change logs
 Logger:SuppressLog("g-init") -- Garden Initialization logs
+Logger:SuppressLog("Plant:SpawnModel") -- Garden Initialization logs
 
 function LoadGardenItems()
      if not inv or not inv.Items then
@@ -77,7 +78,26 @@ Citizen.CreateThread(function (threadId)
 	local garden = Garden:new(pos.xyz, 5,5)
 	-- Wrong Impl, remove later
 	Garden.activeGarden = garden
+     	garden.dui = lib.dui:new({
+               url = ("nui://%s/html/index.html"):format(cache.resource),
+               width = 512,
+               height = 512,
+          })
 
+          Wait(150)
+
+          garden.dui:sendMessage({
+               action = "buildGrid",
+               data = {
+                    rows = garden.grid.rows,
+                    cols = garden.grid.cols
+               }
+          })
+
+          garden.dui:sendMessage({
+               action = "toggleGrid",
+               data = true
+          })
 
      while true do
           Wait(0)
