@@ -32,6 +32,7 @@ function Plant:new(seedId, garden, cell)
      self.isStatusShown = false
      self.dui = nil
 
+
      self:StartPlant(self.garden)
 
      return self
@@ -44,7 +45,8 @@ function Plant:StartPlant(garden)
 
           self.dui = lib.dui:new({
                url = ("nui://%s/html/index.html"):format(cache.resource),
-               debug=true
+               width = 512,
+               height = 512
           })
 
           self.plantedAt = GetGameTimer()
@@ -73,9 +75,8 @@ function Plant:StartPlant(garden)
           -- FIXME: Cauze crash !
           self.dui = lib.dui:new({
                url = ("nui://%s/html/index.html"):format(cache.resource),
-               debug=true,
-               width = 100,
-               height = 100
+               width = 1920,
+               height = 1080
           })
 
           Wait(2000)
@@ -202,16 +203,24 @@ function Plant:update()
      end
 
      if self.isStatusShown and next(self.dui) ~= nil then
-          Logger:Debug("Plant status updated", self.isStatusShown, self.dui)
-          if not self.dui.dictName or not self.dui.txtName then
-               return Logger:Error("Missing UI elements for plant status")
-          end
+         self:PlantStatusUpdate()
+         if not self.dui.dictName or not self.dui.txtName then
+             return Logger:Error("Missing UI elements for plant status")
+         end
 
-          Logger:Debug():Info("Calling mCore.DrawCustomIcon")
-          mCore.DrawCustomIcon(vec3(), 10, 9.8, {
-               dict = self.dui.dictName,
-               name = self.dui.txtName
-          }, nil, vec3(1,1,0), nil, true)
+         local w, h = 2.5, 2.5
+         local basePos = self:GetWorldPosition(false)
+
+         local panelPos = vec3(
+             basePos.x + 0.3,
+             basePos.y,
+             basePos.z +0.3
+         )
+
+         mCore.DrawCustomIcon(panelPos, w, h, {
+             dict = self.dui.dictName,
+             name = self.dui.txtName
+         }, nil, nil, nil, true)
      end
 end
 
@@ -249,18 +258,34 @@ function Plant:Harvest()
 end
 
 
+function Plant:PlantStatusUpdate()
+     if self.isStatusShown then
+
+          self.dui:sendMessage({
+               action = "sendPlantData",
+               data = {
+                    water = self.water,
+                    health = self.health,
+                    stage = self.stage,
+                    maxstage= self.data.stages,
+                    name = self.data.name
+               }
+          })
+
+     end
+end
+
 function Plant:ToggleStatus()
      self.isStatusShown = not self.isStatusShown
-     if self.isStatusShown then
-          sendNUI("sendPlantData", {
-               water = self.water,
-               health = self.health,
-               stage = self.stage,
-               maxstage= self.data.stages,
-               name = self.data.name
+
+     Logger:Debug(("Toggled status of %s to %s"):format(self.data.name, tostring(self.isStatusShown)))
+
+     if not self.isStatusShown then
+          self.dui:sendMessage({
+               action = "sendPlantData",
+               data = nil
           })
-     else
-          sendNUI("sendPlantData",nil)
      end
+
      return self.isStatusShown
 end
