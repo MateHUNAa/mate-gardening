@@ -278,7 +278,12 @@ end
 function Plant:ToggleStatus()
      self.isStatusShown = not self.isStatusShown
 
-     Logger:Debug(("Toggled status of %s to %s"):format(self.data.name, tostring(self.isStatusShown)))
+     Logger:Debug(("Toggled status of %s to %s"):format(self.data.name, tostring(self.isStatusShown)), {
+          lSettings = {
+               id = "plantStatus",
+               prefixes = {"Plant", "ToggleStatus"},
+          }
+     })
 
      if not self.isStatusShown then
           self.dui:sendMessage({
