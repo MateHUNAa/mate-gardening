@@ -55,6 +55,7 @@ files {
   "html/index.html",
   "html/assets/*.js",
   "html/assets/*.css",
+  "html/*.png",
   "shared/config.lua",
   "client/tools/*.lua",
   "client/seeds/*.lua"
