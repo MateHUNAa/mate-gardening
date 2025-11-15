@@ -1,5 +1,8 @@
 local pos = vec4(53.0448, -1894.7394, 21.6000-0.9, 52.7274)
 
+Logger:SuppressLog("plantStatus") -- PlantStatus change logs
+Logger:SuppressLog("g-init") -- Garden Initialization logs
+
 function LoadGardenItems()
      if not inv or not inv.Items then
           Logger:Error("ox_inventory not found, skipping garden items loading.")
@@ -17,7 +20,7 @@ function LoadGardenItems()
 
                     if plantData and plantData.name then
                          PlantRegistry:Register(plantData.name, plantData)
-                         Logger:Info("Registered plant: " .. plantData.name)
+                         Logger:Info("Registered plant: " .. plantData.name, {lSettings = {id = "g-init"}})
 
                          -- Register seed
                          local SeedBase = require("client.seeds.SeedBase")
@@ -31,7 +34,7 @@ function LoadGardenItems()
                               seed.yield = plantData.yield
 
                               SeedRegistry:Register(plantData.name, SeedBase)
-                              Logger:Info(("Registered seed: %s"):format(plantData.name))
+                              Logger:Info(("Registered seed: %s"):format(plantData.name), {lSettings = {id = "g-init"}})
                          end
                     end
 
@@ -57,7 +60,7 @@ function LoadGardenTools()
                     tool.uses = toolData.uses or 10
 
                     ToolRegistry:Register(tool.name, tool)
-                    Logger:Info(("Registered tool: %s (action=%s)"):format(tool.name, tool.action))
+                    Logger:Info(("Registered tool: %s (action=%s)"):format(tool.name, tool.action) , {lSettings = {id = "g-init"}})
                end
           end
      end
