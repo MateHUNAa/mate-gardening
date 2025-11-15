@@ -28,5 +28,17 @@ function ToolInspector:OnUse(garden, cell)
      plant:ToggleStatus()
 end
 
+function ToolInspector:Unequip(garden)
+     local lastHovered = garden.lastHoveredCell
+
+     if lastHovered then
+          local plant = garden:GetPlant(lastHovered)
+          if plant then
+               plant:ToggleStatus()
+          end
+     end
+
+end
+
 
 return ToolInspector

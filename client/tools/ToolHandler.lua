@@ -13,7 +13,7 @@ function OnEquipTool(itemName)
 
     if ActiveToolName == itemName then
         if ActiveTool and ActiveTool.Unequip then
-            ActiveTool:Unequip()
+            ActiveTool:Unequip(Garden:GetActiveGarden())
         end
         ActiveTool = nil
         ActiveToolName = nil

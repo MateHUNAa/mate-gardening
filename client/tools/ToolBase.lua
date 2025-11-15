@@ -21,7 +21,7 @@ function ToolBase:Equip()
     Logger:Warning(("[%s] Equip() not implemented."):format(self.name or "UnknownTool"))
 end
 
-function ToolBase:Unequip()
+function ToolBase:Unequip(garden)
     Logger:Warning(("[%s] Unequip() not implemented."):format(self.name or "UnknownTool"))
     ActiveTool = nil
 end
