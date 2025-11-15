@@ -10,7 +10,7 @@
           "E:/[Fivem]/[ServerFiles]/DMF v1.2/resources/[DEPENDENCY]/[ox]/ox_lib",
           "E:/[Fivem]/[ServerFiles]/DMF v1.2/resources/[DEPENDENCY]/[ox]/oxmysql",
           "E:/[Fivem]/[ServerFiles]/DMF v1.2/resources/[DEPENDENCY]/mate-grid/client",
-          "E:/[Fivem]/[ServerFiles]/DMF v1.2/resources/[DEPENDENCY]/mate-logger/init.lua",
+          "E:/[Fivem]/[ServerFiles]/DMF v1.2/resources/[DEPENDENCY]/mate-logger/shared/",
           "./types"
      ],
      "workspace.checkThirdParty": false,
