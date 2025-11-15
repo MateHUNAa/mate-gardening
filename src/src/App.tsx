@@ -4,6 +4,7 @@ import { debugData } from "@/utils/debugData";
 import type { Plant } from "@/types/plant";
 import PlantCard from "@/components/plantCard";
 import { isEnvBrowser } from "./utils/misc";
+import GridWrapper from "./components/GridWrapper";
 
 function App() {
   const [visible, setVisibility] = useState<boolean>(
@@ -18,6 +19,7 @@ function App() {
       {visible && <div></div>}
 
       <PlantCard />
+      <GridWrapper defaultRows={5} defaultCols={5} defaultImage="soil.png" />
     </div>
   );
 }
