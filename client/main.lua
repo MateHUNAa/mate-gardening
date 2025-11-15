@@ -72,6 +72,9 @@ Citizen.CreateThread(function (threadId)
      LoadGardenTools()
 
 	local garden = Garden:new(pos.xyz, 5,5)
+	-- Wrong Impl, remove later
+	Garden.activeGarden = garden
+
 
      while true do
           Wait(0)
