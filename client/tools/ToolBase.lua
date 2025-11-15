@@ -1,7 +1,6 @@
 ToolBase = {}
 ToolBase.__index = ToolBase
 
-
 function ToolBase:new(name)
      local self = setmetatable({}, ToolBase)
      self.name = name
