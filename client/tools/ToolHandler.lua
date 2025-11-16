@@ -11,15 +11,17 @@ function OnEquipTool(itemName)
         return
     end
 
+
     if ActiveToolName == itemName then
         if ActiveTool and ActiveTool.Unequip then
             ActiveTool:Unequip(Garden:GetActiveGarden())
         end
         ActiveTool = nil
         ActiveToolName = nil
-        -- Logger:Info(("Unequipped tool: %s"):format(itemName))
         return
     end
+
+    TriggerEvent("mate-gardening:UnequipAll", tool)
 
     if ActiveTool and ActiveTool.Unequip then
         ActiveTool:Unequip()

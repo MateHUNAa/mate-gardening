@@ -91,8 +91,16 @@ end
 --- @param button number
 function Garden:OnCellClick(cell, button)
      local plant = self:GetPlant(cell)
+     local hasDirt = self:GetDirt(cell)
 
-     if not plant then
+     if ActiveMaterial then
+          if ActiveMaterial.OnApply then
+               ActiveMaterial:OnApply(self, cell)
+               return
+          end
+     end
+
+     if not plant and hasDirt then
           local seed = GetActiveSeed()
 
           if not seed then
@@ -137,7 +145,7 @@ function Garden:OnCellHoldCancelled(cell)
 end
 
 --- @param cell Cell
-function Garden:PutDirt(cell)
+function Garden:PlantDirt(cell)
      local dirt = self:GetDirt(cell)
 
      if dirt then

@@ -46,7 +46,7 @@ function OnSetText(uri, text)
           }
      end
 
-     if text:find("%+=") or text:find("%-=") then
+     if text:find("%+=") or text:find("%-=") or text:find("%/=") then
           return ''
      end
 

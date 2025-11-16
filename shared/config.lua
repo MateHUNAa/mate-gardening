@@ -33,6 +33,16 @@ Config.Props = {
      Shovel = {
           model = "prop_tool_shovel",
      },
+     Dirt = {
+          model = "prop_feed_sack_01"
+     }
+}
+
+Config.Ptfx = {
+     Dirt = {
+          dict = "scr_armenian3",
+          effect = "ent_anim_leaf_blower"
+     }
 }
 
 Config.Animations = {
