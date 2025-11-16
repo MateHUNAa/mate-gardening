@@ -29,12 +29,10 @@ function SetActiveSeed(seedName)
     end
 
     local seed = seedClass:new(seedName)
+
+    TriggerEvent("mate-gardening:UnequipAll", seed)
+
     ActiveSeed = seed
-
-    if ActiveTool and ActiveTool.Unequip then
-         ActiveTool:Unequip()
-    end
-
     if ActiveSeed and ActiveSeed.Equip then
          ActiveSeed:Equip()
     end
@@ -50,9 +48,12 @@ exports("handle_seed", function(data, slot, _)
     local registryName = data.client and data.client.plantData and data.client.plantData.name
     if not registryName then return end
 
-    if GetActiveSeed() and GetActiveSeed().name == registryName then
+    local active = GetActiveSeed()
+
+    if active and active.name == registryName then
         SetActiveSeed(nil)
-    else
-        SetActiveSeed(registryName)
+        return
     end
+
+    SetActiveSeed(registryName)
 end)
