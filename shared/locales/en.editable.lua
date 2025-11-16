@@ -12,7 +12,8 @@ Loc["en"] = {
      info    = {
           ["need_seed_for_plant"] = "Select a seed before planting.",
           ["no_active_tool"] = "No active tool",
-          ["harvesting"] = "Harvesting..."
+          ["harvesting"] = "Harvesting...",
+          ["applying_dirt"] = "Applying dirt..."
      },
      warning = {},
 
