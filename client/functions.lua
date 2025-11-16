@@ -193,13 +193,21 @@ Functions = {
      end),
      ---@param dict string
      loadPtfxDict = (function(dict)
-          if not HasNamedPtfxAssetLoaded(dict) then
-               mCore.debug.log("^2Loading Ptfx Dictionary^7: '^6" .. dict .. "^7'")
-               while not HasNamedPtfxAssetLoaded(dict) do
-                    RequestNamedPtfxAsset(dict)
-                    Wait(5)
-               end
+          if HasNamedPtfxAssetLoaded(dict) then return true end
+
+          RequestNamedPtfxAsset(dict)
+          local timer = 0
+          while not HasNamedPtfxAssetLoaded(dict) and timer < 5000 do
+               Citizen.Wait(0)
+               timer = timer + 1
           end
+
+          if not HasNamedPtfxAssetLoaded(dict) then
+               Logger:Error(("Ptfx dictionary '%s' failed to load"):format(dict))
+               return false
+          end
+
+          return true
      end),
      ---@param dict string
      unloadPtfxDict = (function(dict)
