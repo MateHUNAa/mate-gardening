@@ -23,11 +23,14 @@ client_scripts {
      "client/init.lua",
      "client/functions.lua",
      "client/garden/*.lua",
-     "client/tools/ToolHandler.lua",
      "client/tools/ToolRegistry.lua",
-     "client/seeds/SeedHandler.lua",
+     "client/tools/ToolHandler.lua",
      "client/seeds/SeedRegistry.lua",
+     "client/seeds/SeedHandler.lua",
+     "client/materials/MaterialRegistry.lua",
+     "client/materials/MaterialHandler.lua",
 
+     "client/events/*.lua",
      "client/nui.lua",
      "client/main.lua",
 }
@@ -58,7 +61,8 @@ files {
   "html/*.png",
   "shared/config.lua",
   "client/tools/*.lua",
-  "client/seeds/*.lua"
+  "client/seeds/*.lua",
+  "client/materials/*.lua",
 }
 
 
