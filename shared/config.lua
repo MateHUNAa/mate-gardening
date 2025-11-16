@@ -40,8 +40,8 @@ Config.Props = {
 
 Config.Ptfx = {
      Dirt = {
-          dict = "scr_armenian3",
-          effect = "ent_anim_leaf_blower"
+          dict = "core",
+          effect = "ent_sht_beer_barrel"
      }
 }
 
@@ -53,6 +53,10 @@ Config.Animations = {
      Dig = {
            dict = "random@burial",
            anim = "a_burial"
+     },
+     Dirt = {
+          dict = "weapons@misc@jerrycan@",
+          anim = "fire",
      }
 }
 
