@@ -1,20 +1,27 @@
 {
-     "$schema": "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json",
-     "runtime.version": "Lua 5.4",
-     "runtime.path": ["?.lua", "?/init.lua"],
-
-     "workspace.library": [
-          "C:/Natives/CFX-NATIVE",
-          "C:/Natives/GTAV",
-          "C:/Natives/runtime",
-          "E:/[Fivem]/[ServerFiles]/DMF v1.2/resources/[DEPENDENCY]/[ox]/ox_lib",
-          "E:/[Fivem]/[ServerFiles]/DMF v1.2/resources/[DEPENDENCY]/[ox]/oxmysql",
-          "E:/[Fivem]/[ServerFiles]/DMF v1.2/resources/[DEPENDENCY]/mate-grid/client",
-          "E:/[Fivem]/[ServerFiles]/DMF v1.2/resources/[DEPENDENCY]/mate-logger/shared/",
-          "./types"
-     ],
-     "workspace.checkThirdParty": false,
-     "runtime.plugin": ["./plugin.lua"],
-
-     "diagnostics.disable": ["lowercase-global", "trailing-space", "duplicate-set-field"]
+     "$schema": "https://raw.githubusercontent.com/sumneko/vscode-lua/master/setting/schema.json",
+     "runtime": {
+          "version": "Lua 5.4",
+          "plugin": "./plugin.lua"
+     },
+     "workspace": {
+          "library": [
+               "types",
+               "types/**/*.lua",
+               "E:/[Fivem]/SERVER/txData/DMF v1.2/resources/[DEPENDENCY]/mate-grid/client/grid.lua",
+               "E:/[Fivem]/SERVER/txData/DMF v1.2/resources/[DEPENDENCY]/mate-logger/shared/logger.lua",
+               "E:/[Fivem]/SERVER/txData/DMF v1.2/resources/[DEPENDENCY]/[ox]/ox_lib",
+               "E:/[Fivem]/SERVER/txData/DMF v1.2/resources/[DEPENDENCY]/mCore"
+          ],
+          "ignoreDir": [".vscode", "**/node_modules", "**/dist", "**/.git"]
+     },
+     "diagnostics": {
+          "disable": ["lowercase-global", "trailing-space", "duplicate-set-field"]
+     },
+     "misc.parameters": ["--develop=true"],
+     "completion": {
+          "callSnippet": "Both",
+          "showParams": true,
+          "showWord": "Enable"
+     }
 }
