@@ -2,6 +2,8 @@ local MaterialBase = require("client.materials.MaterialBase")
 local MaterialDirt = setmetatable({}, MaterialBase)
 MaterialDirt.__index = MaterialDirt
 
+Logger:SuppressLog("material_dirt")
+
 function MaterialDirt:new()
      local self = MaterialBase:new("dirt")
      self.actionTime = 1000
@@ -9,15 +11,14 @@ function MaterialDirt:new()
      return setmetatable(self, MaterialDirt)
 end
 
-function MaterialDirt:OnApply(garden, cell)
-     local cellPos = garden.grid:GetCellWorldPos(cell.row, cell.col) + vec3(0,0,-1)
-
-     self.applying = true
-
-     Functions.MoveTo(cellPos + vec(0,0,1))
-
+function MaterialDirt:DrawParticle(cellPos)
      Citizen.CreateThread(function()
-          Functions.loadPtfxDict(Config.Ptfx.Dirt.dict)
+          local ptfxLoaded = Functions.loadPtfxDict(Config.Ptfx.Dirt.dict)
+          if not ptfxLoaded then
+               self.applying = false
+               Logger:Error("Failed to load particle effect dictionary")
+               return
+          end
 
           local function FindAttachedEntity(ped, model)
                local coords = GetEntityCoords(ped)
@@ -46,15 +47,14 @@ function MaterialDirt:OnApply(garden, cell)
                end
 
                if foundEntity then
-                    local pos = GetOffsetFromEntityInWorldCoords(foundEntity, 0.12, 0.13, -0.12)
 
-                    local xRot, yRot, zRot = RotationToFace(pos, cellPos)
+                    local pos = GetOffsetFromEntityInWorldCoords(foundEntity, 0.0,0.0,0.7)
 
                     local wSplash = StartParticleFxLoopedAtCoord(
                          Config.Ptfx.Dirt.effect,
                          pos.x, pos.y, pos.z,
-                         xRot, yRot, zRot,
-                         1.0,
+                         180.0, 0.0, 0.0,
+                         2.0,
                          false, false, false, false
                     )
 
@@ -63,44 +63,52 @@ function MaterialDirt:OnApply(garden, cell)
                end
           end
      end)
-
-
-     Functions.PlayAnimation(PlayerPedId(), {
-          dict = "weapons@misc@jerrycan@",
-          anim = "fire",
-          props = {
-               {
-                    model = "prop_feed_sack_01",
-                    bone = 57005,
-                    coords = vector3(0.12, 0.13, -0.12),
-                    rotation = vector3(-165.869, -11.212, -32.945)
-               }
-          },
-     }, function()
-          garden:PlantDirt(cell)
-          Logger:Info(("Applied dirt to cell [%s,%s]"):format(cell.row, cell.col))
-          self.applying = false
-          Functions.unloadPtfxDict(Config.Ptfx.Dirt.dict)
-     end)
 end
 
+function MaterialDirt:OnApply(garden, cell)
+     local cellPos = garden.grid:GetCellWorldPos(cell.row, cell.col)
 
-function RotationToFace(start, dest)
-     local dx = dest.x - start.x
-     local dy = dest.y - start.y
-     local dz = dest.z - start.z
+     local dist = #(GetEntityCoords(cache.ped) - cellPos)
 
-     local dist = math.sqrt(dx * dx + dy * dy + dz * dz)
-     if dist == 0 then return 0.0, 0.0, 0.0 end
+     if dist >= 1.3 then
+          Citizen.CreateThread(function()
+               Functions.MoveTo(cellPos)
+          end)
+     end
 
-     dx          /= dist
-     dy          /= dist
-     dz          /= dist
+     while dist >= 1.3 do
+          Citizen.Wait(0)
+          dist = #(GetEntityCoords(cache.ped) - cellPos)
+     end
 
-     local yaw   = math.atan2(dy, dx) * 180.0 / math.pi
-     local pitch = -math.atan2(dz, math.sqrt(dx * dx + dy * dy)) * 180.0 / math.pi
+     self.applying = true
 
-     return pitch, 0.0, yaw
+     local prop = Functions.makeProp({
+          prop = Config.Props.Dirt.model,
+          coords = vec4(0,0,0,0)
+     }, false, true)
+
+     AttachEntityToEntity(prop, cache.ped, GetPedBoneIndex(cache.ped, 57005), 0.12, 0.13, -0.12, -165.869, -11.212, -32.945, true, true, false, true, 1, true)
+
+     self:DrawParticle(cellPos)
+
+      if Functions.progressBar({
+          time = self.actionTime,
+          label = lang["info"]["applying_dirt"],
+          dict = Config.Animations.Dirt.dict,
+          anim = Config.Animations.Dirt.anim
+     }) then
+          garden:PlantDirt(cell)
+          Logger:Info(("Applied dirt to cell [%s,%s]"):format(cell.row, cell.col), {lSettings = {
+               id = "material_dirt",
+               prefixes = {"Material"},
+               subPrefix = "DIRT"
+          }})
+          self.applying = false
+          Functions.unloadPtfxDict(Config.Ptfx.Dirt.dict)
+          Functions.destoryProp(prop)
+      end
+
 end
 
 return MaterialDirt
