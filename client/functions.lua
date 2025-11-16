@@ -7,6 +7,57 @@ local count = 0
 
 Editable = {}
 Functions = {
+     --- @param ped number The ped to animate.
+     --- @param options table Animation config.
+     --- @param callback function|nil Optional callback after animation ends.
+     PlayAnimation = (function(ped, options, callback)
+         if not ped then print("Ped is missing") return end
+         if not options or not options.dict or not options.anim then
+             return print("Missing animation dictionary or name")
+         end
+
+         if not HasAnimDictLoaded(options.dict) then
+             RequestAnimDict(options.dict)
+             while not HasAnimDictLoaded(options.dict) do Wait(0) end
+         end
+
+         if options.freeze then FreezeEntityPosition(ped, true) end
+
+         local duration = options.duration or 2000
+         local props = {}
+
+         if options.props then
+             for _, prop in ipairs(options.props) do
+                 if not HasModelLoaded(prop.model) then
+                     RequestModel(prop.model)
+                     while not HasModelLoaded(prop.model) do Wait(0) end
+                 end
+
+                 local prop_entity = CreateObject(GetHashKey(prop.model), GetEntityCoords(ped), true, true, true)
+                 AttachEntityToEntity(prop_entity, ped, GetPedBoneIndex(ped, prop.bone), prop.coords.x or 0.0, prop.coords.y or 0.0, prop.coords.z or 0.0, prop.rotation.x or 0.0, prop.rotation.y or 0.0, prop.rotation.z or 0.0, true, prop.use_soft or false, prop.collision or false, prop.is_ped or true, prop.rot_order or 1, prop.sync_rot or true)
+                 table.insert(props, prop_entity)
+             end
+         end
+
+         local flags = options.flags or 1
+         local playback = options.playback or 0
+         local blend_in = options.blend_in or 8.0
+         local blend_out = options.blend_out or -8.0
+         local lock_x = options.lock_x or 0
+         local lock_y = options.lock_y or 0
+         local lock_z = options.lock_z or 0
+
+         if options.continuous then
+             TaskPlayAnim(ped, options.dict, options.anim, blend_in, blend_out, -1, flags, playback, lock_x, lock_y, lock_z)
+         else
+             TaskPlayAnim(ped, options.dict, options.anim, blend_in, blend_out, duration, flags, playback, lock_x, lock_y, lock_z)
+             Wait(duration)
+             ClearPedTasks(ped)
+             if options.freeze then FreezeEntityPosition(ped, false) end
+             for _, prop_entity in ipairs(props) do DeleteObject(prop_entity) end
+             if callback then callback() end
+         end
+     end),
      ---@param pos vector3|vector4
      ---@param handleCam? boolean
      TeleportPlayer = (function(pos, handleCam)
